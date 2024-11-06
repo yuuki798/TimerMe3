@@ -6,8 +6,8 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	sms "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20210111" // 引入sms
-	"github.com/trancecho/mundo-be-template/config"
-	"github.com/trancecho/mundo-be-template/core/logx"
+	"github.com/yuuki798/TimerMe3/config"
+	"github.com/yuuki798/TimerMe3/core/logx"
 )
 
 func SendCMS(phone string, parameters []string) bool {

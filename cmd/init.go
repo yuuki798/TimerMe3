@@ -2,8 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/trancecho/mundo-be-template/cmd/config"
-	"github.com/trancecho/mundo-be-template/cmd/server"
+	"github.com/yuuki798/TimerMe3/cmd/server"
 	"os"
 )
 
@@ -16,7 +15,6 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(server.StartCmd)
-	rootCmd.AddCommand(config.StartCmd)
 }
 
 func Execute() {

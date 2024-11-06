@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/yuuki798/TimerMe3/config"
 	"time"
 )
 
@@ -28,7 +29,7 @@ func GenerateToken(userID uint, username, role string) (string, error) {
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expireTime), // 转换为 *NumericDate
 			IssuedAt:  jwt.NewNumericDate(now),        // 转换为 *NumericDate
-			Issuer:    "offercat",
+			Issuer:    config.GetConfig().AppName,
 		},
 	}
 

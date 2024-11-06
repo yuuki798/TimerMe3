@@ -2,8 +2,8 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trancecho/mundo-be-template/core/auth"
-	"github.com/trancecho/mundo-be-template/core/libx"
+	"github.com/yuuki798/TimerMe3/core/auth"
+	"github.com/yuuki798/TimerMe3/core/libx"
 	"log"
 	"net/http"
 )

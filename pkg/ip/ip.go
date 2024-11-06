@@ -1,7 +1,7 @@
 package ip
 
 import (
-	"github.com/trancecho/mundo-be-template/pkg/colorful"
+	"github.com/yuuki798/TimerMe3/pkg/colorful"
 	"net"
 )
 

@@ -1,6 +1,7 @@
 package config
 
 type GlobalConfig struct {
+	AppName     string `yaml:"AppName"`
 	MODE        string `yaml:"Mode"`
 	ProgramName string `yaml:"ProgramName"`
 	AUTHOR      string `yaml:"Author"`
@@ -14,9 +15,14 @@ type GlobalConfig struct {
 	} `yaml:"Auth"`
 	Databases []Datasource `yaml:"Databases"`
 	Caches    []Cache      `yaml:"Caches"`
-	OSS       Oss          `yaml:"Oss"`
-	Mail      Mail         `yaml:"Mail"`
-	CMS       Cms          `yaml:"Cms"`
+	Minio     struct {
+		Endpoint        string `yaml:"endpoint"`
+		AccessKeyID     string `yaml:"accessKeyID"`
+		SecretAccessKey string `yaml:"secretAccessKey"`
+		UseSSL          bool   `yaml:"useSSL"`
+	} `yaml:"minio"`
+	Mail Mail `yaml:"Mail"`
+	CMS  Cms  `yaml:"Cms"`
 }
 
 type Datasource struct {

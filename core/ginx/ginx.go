@@ -2,10 +2,10 @@ package ginx
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trancecho/mundo-be-template/core/database"
-	"github.com/trancecho/mundo-be-template/core/middleware/cors"
-	"github.com/trancecho/mundo-be-template/internal/app/ping"
-	"github.com/trancecho/mundo-be-template/internal/router"
+	"github.com/yuuki798/TimerMe3/core/database"
+	"github.com/yuuki798/TimerMe3/core/middleware/cors"
+	"github.com/yuuki798/TimerMe3/core/miniox"
+	"github.com/yuuki798/TimerMe3/internal/router"
 	"log"
 )
 
@@ -15,15 +15,15 @@ func GinInit() *gin.Engine {
 	if db == nil {
 		log.Fatalln("db not found")
 	}
-	err := db.AutoMigrate(
-		&ping.TestModel{},
-	)
+	err := AutoMigrate(db)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	r.Use(cors.Middleware())
 	router.GenerateRouters(r)
+
+	miniox.MinioInit()
 
 	return r
 }

@@ -2,8 +2,8 @@ package mail
 
 import (
 	"fmt"
-	"github.com/trancecho/mundo-be-template/config"
-	"github.com/trancecho/mundo-be-template/core/logx"
+	"github.com/yuuki798/TimerMe3/config"
+	"github.com/yuuki798/TimerMe3/core/logx"
 	"gopkg.in/gomail.v2"
 	"time"
 )

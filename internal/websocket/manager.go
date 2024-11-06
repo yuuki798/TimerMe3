@@ -1,7 +1,7 @@
 package websocket
 
 import (
-	"github.com/trancecho/mundo-be-template/core/logx"
+	"github.com/yuuki798/TimerMe3/core/logx"
 	"log"
 	"net/http"
 	"time"

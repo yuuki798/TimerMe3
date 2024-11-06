@@ -1,7 +1,7 @@
 package logx
 
 import (
-	"github.com/trancecho/mundo-be-template/config"
+	"github.com/yuuki798/TimerMe3/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"

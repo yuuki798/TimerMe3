@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/trancecho/mundo-be-template/core/database/driver"
+	"github.com/yuuki798/TimerMe3/core/database/driver"
 	"gorm.io/gorm"
 )
 

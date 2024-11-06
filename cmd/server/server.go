@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/trancecho/mundo-be-template/config"
-	"github.com/trancecho/mundo-be-template/core/cache"
-	"github.com/trancecho/mundo-be-template/core/database"
-	"github.com/trancecho/mundo-be-template/core/ginx"
-	"github.com/trancecho/mundo-be-template/core/kernel"
-	"github.com/trancecho/mundo-be-template/core/logx"
-	"github.com/trancecho/mundo-be-template/pkg/ip"
+	"github.com/yuuki798/TimerMe3/config"
+	"github.com/yuuki798/TimerMe3/core/cache"
+	"github.com/yuuki798/TimerMe3/core/database"
+	"github.com/yuuki798/TimerMe3/core/ginx"
+	"github.com/yuuki798/TimerMe3/core/kernel"
+	"github.com/yuuki798/TimerMe3/core/logx"
+	"github.com/yuuki798/TimerMe3/pkg/ip"
 	"go.uber.org/zap/zapcore"
 	"net/http"
 	"os"
@@ -30,7 +30,7 @@ var (
 		Example: "main server -c config/settings.yml",
 		PreRun: func(cmd *cobra.Command, args []string) {
 			println("Loading config...")
-			setUp()
+			SetUp()
 			println("Loading config complete")
 			//println("Loading Api...")
 			//load()
@@ -38,10 +38,10 @@ var (
 		},
 		Run: func(cmd *cobra.Command, args []string) {
 			println("Starting Server...")
-			run()
+			Run()
 		},
 	}
-	log = logx.NameSpace("cmd.server")
+	//log = logx.NameSpace("cmd.server")
 )
 
 var env string
@@ -60,7 +60,7 @@ func init() {
 	}
 }
 
-func setUp() {
+func SetUp() {
 	// 初始化全局 ctx
 	ctx, cancel := context.WithCancel(context.Background())
 
@@ -120,7 +120,7 @@ func setUp() {
 //}
 
 // 运行 Gin 服务器
-func run() {
+func Run() {
 	// 创建 HTTP 服务器实例
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("%s:%s", config.GetConfig().Host, config.GetConfig().Port),

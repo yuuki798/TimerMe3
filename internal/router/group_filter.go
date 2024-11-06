@@ -2,18 +2,19 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trancecho/mundo-be-template/core/middleware/response"
-	"github.com/trancecho/mundo-be-template/core/middleware/web"
-	"github.com/trancecho/mundo-be-template/internal/router/protected"
+	"github.com/yuuki798/TimerMe3/core/builder"
+	"github.com/yuuki798/TimerMe3/core/middleware/response"
+	"github.com/yuuki798/TimerMe3/core/middleware/web"
+	"github.com/yuuki798/TimerMe3/internal/router/protected"
 )
 
 func GenerateRouters(r *gin.Engine) *gin.Engine {
 
-	newGroup := &MyGroup{
-		g: r.Group("/"),
+	newGroup := &builder.MyGroup{
+		G: r.Group("/"),
 	}
 
-	baseGroup := NewGroupBuilder().
+	baseGroup := builder.NewGroupBuilder().
 		SetName("base").
 		AddRoute("").
 		SetFatherGroup(newGroup).
@@ -21,10 +22,10 @@ func GenerateRouters(r *gin.Engine) *gin.Engine {
 		SetRoutes(Entity{}.Router).
 		Build()
 
-	GetMyGroupDetail(baseGroup)
+	builder.GetMyGroupDetail(baseGroup)
 	{
 		// 继承/base
-		protectedGroup := NewGroupBuilder().
+		protectedGroup := builder.NewGroupBuilder().
 			SetName("protected").
 			SetFatherGroup(baseGroup).
 			AddRoute("/api").
@@ -32,7 +33,7 @@ func GenerateRouters(r *gin.Engine) *gin.Engine {
 			SetRoutes(protected.Entity{}.Router).
 			Build()
 
-		GetMyGroupDetail(protectedGroup)
+		builder.GetMyGroupDetail(protectedGroup)
 	}
 	return r
 }

@@ -1,9 +1,9 @@
 package cache
 
 import (
-	"github.com/trancecho/mundo-be-template/config"
-	"github.com/trancecho/mundo-be-template/core/cache/driver"
-	"github.com/trancecho/mundo-be-template/core/cache/types"
+	"github.com/yuuki798/TimerMe3/config"
+	"github.com/yuuki798/TimerMe3/core/cache/driver"
+	"github.com/yuuki798/TimerMe3/core/cache/types"
 )
 
 type Creator interface {

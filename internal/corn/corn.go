@@ -2,7 +2,7 @@ package corn
 
 import (
 	"github.com/robfig/cron"
-	"github.com/trancecho/mundo-be-template/core/logx"
+	"github.com/yuuki798/TimerMe3/core/logx"
 )
 
 var (

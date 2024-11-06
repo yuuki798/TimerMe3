@@ -2,9 +2,9 @@ package ping
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trancecho/mundo-be-template/core/cache"
-	"github.com/trancecho/mundo-be-template/core/database"
-	"github.com/trancecho/mundo-be-template/core/libx"
+	"github.com/yuuki798/TimerMe3/core/cache"
+	"github.com/yuuki798/TimerMe3/core/database"
+	"github.com/yuuki798/TimerMe3/core/libx"
 	"log"
 	"time"
 )

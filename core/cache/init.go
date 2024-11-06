@@ -1,9 +1,9 @@
 package cache
 
 import (
-	"github.com/trancecho/mundo-be-template/config"
-	"github.com/trancecho/mundo-be-template/core/cache/types"
-	"github.com/trancecho/mundo-be-template/core/logx"
+	"github.com/yuuki798/TimerMe3/config"
+	"github.com/yuuki798/TimerMe3/core/cache/types"
+	"github.com/yuuki798/TimerMe3/core/logx"
 	"sync"
 )
 

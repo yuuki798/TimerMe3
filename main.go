@@ -1,7 +1,9 @@
 package main
 
-import "github.com/trancecho/mundo-be-template/cmd"
+import "github.com/yuuki798/TimerMe3/cmd/server"
 
 func main() {
-	cmd.Execute()
+	//cmd.Execute()
+	server.SetUp()
+	server.Run()
 }

@@ -1,4 +1,4 @@
-package router
+package builder
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ type MyGroup struct {
 	fatherGroup *MyGroup
 	middlewares []string
 
-	g *gin.RouterGroup
+	G *gin.RouterGroup
 }
 
 func GetMyGroupDetail(group *MyGroup) {
@@ -48,7 +48,7 @@ func NewGroupBuilder() *GroupBuilder {
 
 func (b *GroupBuilder) SetFatherGroup(entity *MyGroup) *GroupBuilder {
 	b.group = entity
-	b.path = entity.g.BasePath()
+	b.path = entity.G.BasePath()
 	return b
 }
 
@@ -67,7 +67,7 @@ type Routes interface {
 }
 
 func (b *GroupBuilder) AddMiddleware(middleware ...gin.HandlerFunc) *GroupBuilder {
-	if b.group == nil || b.group.g == nil {
+	if b.group == nil || b.group.G == nil {
 	}
 	b.newMiddlewares = append(b.newMiddlewares, middleware...)
 	return b
@@ -86,7 +86,7 @@ func (b *GroupBuilder) Build() *MyGroup {
 		log.Panic("routes function is nil")
 	}
 
-	group := b.group.g.Group(b.path)
+	group := b.group.G.Group(b.path)
 
 	var middlewaresAll []string
 	middlewaresAll = append(middlewaresAll, b.group.middlewares...)
@@ -101,6 +101,6 @@ func (b *GroupBuilder) Build() *MyGroup {
 		name:        b.name,
 		fatherGroup: b.group,
 		middlewares: middlewaresAll,
-		g:           group,
+		G:           group,
 	}
 }

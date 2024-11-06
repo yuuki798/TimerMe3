@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/trancecho/mundo-be-template/core/libx"
+	"github.com/yuuki798/TimerMe3/core/libx"
 )
 
 // AdminMiddleware 这里代表只有admin才能访问的中间件
