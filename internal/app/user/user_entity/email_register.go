@@ -1,7 +1,7 @@
 package user_entity
 
 import (
-	"gorm.io/gorm"
+	"github.com/yuuki798/TimerMe3/core/model"
 	"time"
 )
 
@@ -11,7 +11,8 @@ import (
 // autoCreateTime是自动创建时间，按照go应用的时区。
 // id一般不是负的，所以用uint，可以节省一半的空间
 type EmailVerification struct {
-	gorm.Model
+	//gorm.Model
+	model.BaseModel
 	UserID    uint      `gorm:"not null"`                               // 关联的用户ID
 	Token     string    `gorm:"type:varchar(255);uniqueIndex;not null"` // 唯一的验证令牌
 	ExpiresAt time.Time `gorm:"not null"`                               // 令牌过期时间

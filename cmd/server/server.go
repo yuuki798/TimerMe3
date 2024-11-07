@@ -11,9 +11,7 @@ import (
 	"github.com/yuuki798/TimerMe3/core/database"
 	"github.com/yuuki798/TimerMe3/core/ginx"
 	"github.com/yuuki798/TimerMe3/core/kernel"
-	"github.com/yuuki798/TimerMe3/core/logx"
 	"github.com/yuuki798/TimerMe3/pkg/ip"
-	"go.uber.org/zap/zapcore"
 	"net/http"
 	"os"
 	"os/signal"
@@ -70,9 +68,9 @@ func SetUp() {
 	// 顺序不能变 logger依赖config logger后面的同时依赖logger和config 否则crash
 	config.LoadConfig(configYml)
 	if config.GetConfig().MODE == "" || config.GetConfig().MODE == "debug" {
-		logx.Init(zapcore.DebugLevel)
+		//logx.Init(zapcore.DebugLevel)
 	} else {
-		logx.Init(zapcore.InfoLevel)
+		//logx.Init(zapcore.InfoLevel)
 	}
 
 	database.InitDB()

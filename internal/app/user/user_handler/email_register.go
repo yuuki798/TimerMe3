@@ -5,7 +5,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/yuuki798/TimerMe3/core/database"
+	"github.com/yuuki798/TimerMe3/core/ginx/dbx"
+	"github.com/yuuki798/TimerMe3/core/ginx/rdsx"
 	"github.com/yuuki798/TimerMe3/core/libx"
 	"github.com/yuuki798/TimerMe3/internal/app/user/user_dto"
 	"github.com/yuuki798/TimerMe3/internal/app/user/user_entity"
@@ -20,7 +21,6 @@ import (
 // EmailRegister 处理邮箱注册请求
 // 每次请求共享一个上下文Context，指针传递，所以不用担心并发问题
 func EmailRegister(c *gin.Context) {
-	var db = database.GetDb("MainMysql")
 
 	var registerInput user_dto.RegisterInput
 	// 从请求中解析JSON数据到registerInput结构体
@@ -33,16 +33,22 @@ func EmailRegister(c *gin.Context) {
 	// 检查用户名是否重复
 	var existingUser2 user_entity.User
 	var verification user_entity.EmailVerification
-	res2 := db.Where("username = ?", registerInput.Username).First(&existingUser2)
+	//res2 := dbx.DB.Where("username = ?", registerInput.Username).First(&existingUser2)
+	//
+	//// 过期重发
+	//if dbx.DB.Where("user_id=?", existingUser2.ID).First(&verification).RowsAffected > 0 &&
+	//	verification.ExpiresAt.Before(time.Now()) {
+	//	dbx.DB.Where("user_id=?", existingUser2.ID).Delete(&user_entity.EmailVerification{})
+	//	if existingUser2.Valid == false {
+	//		dbx.DB.Where("id = ? and valid= 0", existingUser2.ID).Delete(&user_entity.User{})
+	//	}
+	//} else if res2.RowsAffected > 0 {
+	//	libx.Registered(c, "用户名已被注册")
+	//	return
+	//}
 
-	// 过期重发
-	if db.Where("user_id=?", existingUser2.ID).First(&verification).RowsAffected > 0 &&
-		verification.ExpiresAt.Before(time.Now()) {
-		db.Where("user_id=?", existingUser2.ID).Delete(&user_entity.EmailVerification{})
-		if existingUser2.Valid == false {
-			db.Where("id = ? and valid= 0", existingUser2.ID).Delete(&user_entity.User{})
-		}
-	} else if res2.RowsAffected > 0 {
+	res2 := dbx.DB.Where("username = ? and valid= 1", registerInput.Username).First(&existingUser2)
+	if res2.RowsAffected > 0 {
 		libx.Registered(c, "用户名已被注册")
 		return
 	}
@@ -55,7 +61,7 @@ func EmailRegister(c *gin.Context) {
 
 	// 检查邮箱是否已被注册
 	var existingUser user_entity.User
-	result := db.Where("email = ?", registerInput.Email).First(&existingUser)
+	result := dbx.DB.Where("email = ?", registerInput.Email).First(&existingUser)
 	if result.RowsAffected > 0 {
 		libx.Registered(c, "邮箱已被注册")
 		return
@@ -71,17 +77,13 @@ func EmailRegister(c *gin.Context) {
 	newUser.Role = "user" // 默认为普通用户，如果要管理员直接在数据库修改
 	newUser.Username = registerInput.Username
 	newUser.Email = registerInput.Email
-	//newUser.DateOfBirth = time.Now()
 	newUser.LastLogin = time.Now()
-	//newUser.VipExpireAt = time.Now() // 不赠送VIP，所以注册时间就是过期时间
-	//newUser.InterviewPoint = 2 * 60  // 注册送2*60个面试点（分钟），也就是2小时
-	//newUser.InterviewPoint = 999 // 改回
 
 	// 验证之后才可以true
 	newUser.Valid = false
 
 	// 保存用户信息到数据库
-	if err := db.Create(&newUser).Error; err != nil {
+	if err := dbx.DB.Create(&newUser).Error; err != nil {
 		libx.Err(c, http.StatusInternalServerError, "建立用户信息失败", err)
 		return
 	}
@@ -97,7 +99,7 @@ func EmailRegister(c *gin.Context) {
 		Token:     token,
 		ExpiresAt: time.Now().Add(24 * time.Hour), // 令牌24小时后过期
 	}
-	if err := db.Create(&verification).Error; err != nil {
+	if err := dbx.DB.Create(&verification).Error; err != nil {
 		libx.Err(c, http.StatusInternalServerError, "创建验证信息失败", err)
 		return
 	}
@@ -106,6 +108,11 @@ func EmailRegister(c *gin.Context) {
 	err = sendVerificationEmail(newUser.ID, newUser.Email, token)
 	if err != nil {
 		libx.Err(c, http.StatusInternalServerError, "发送验证邮件失败", err)
+		return
+	}
+	err = rdsx.Cache.Set("/register/email/"+registerInput.Email, token, time.Minute*5)
+	if err != nil {
+		log.Println("redis set error", err)
 		return
 	}
 
@@ -133,7 +140,6 @@ func generateVerificationToken() (string, error) {
 }
 
 func sendVerificationEmail(userID uint, email, token string) error {
-	var db = database.GetDb("MainMysql")
 
 	// 定义SMTP服务器信息
 	smtpHost := "smtp.qq.com"
@@ -147,7 +153,7 @@ func sendVerificationEmail(userID uint, email, token string) error {
 
 	// 获取用户信息
 	var newUser user_entity.User
-	err2 := db.Where("id = ?", userID).First(&newUser).Error
+	err2 := dbx.DB.Where("id = ?", userID).First(&newUser).Error
 	if err2 != nil {
 		log.Printf("Error retrieving user with ID %d: %v", userID, err2)
 		return fmt.Errorf("failed to get user: %w", err2)

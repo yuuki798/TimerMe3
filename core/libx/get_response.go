@@ -77,6 +77,9 @@ func Err(c *gin.Context, code int, msg string, err error) {
 		errorMsg = "Unknown error"
 	}
 
+	// 打印错误信息
+	log.Println("error:", errorMsg)
+
 	Data(c, gin.H{
 		"error": errorMsg,
 	})

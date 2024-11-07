@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yuuki798/TimerMe3/core/auth"
 	"github.com/yuuki798/TimerMe3/core/libx"
-	"log"
 	"net/http"
 )
 
@@ -12,7 +11,7 @@ import (
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
-		log.Println("token:", token)
+		//log.Println("token:", token)
 		if token == "" {
 			libx.Err(c, http.StatusUnauthorized, "需要提供鉴权token", nil)
 			c.Abort()

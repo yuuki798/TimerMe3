@@ -2,7 +2,6 @@ package database
 
 import (
 	"github.com/yuuki798/TimerMe3/config"
-	"github.com/yuuki798/TimerMe3/core/logx"
 	"gorm.io/gorm"
 	"log"
 	"sync"
@@ -36,7 +35,7 @@ func setDbByKey(key string, db *gorm.DB) {
 		key = "*"
 	}
 	if GetDb(key) != nil {
-		logx.NameSpace("DB").Fatalln("duplicate db key: " + key)
+		log.Fatalln("duplicate db key: ", key)
 	}
 	mux.Lock()
 	defer mux.Unlock()
@@ -46,12 +45,12 @@ func setDbByKey(key string, db *gorm.DB) {
 func mustCreateGorm(database config.Datasource) *gorm.DB {
 	var creator = getCreatorByType(database.Type)
 	if creator == nil {
-		logx.NameSpace("DB").Fatalf("fail to find creator for types:%s", database.Type)
+		log.Fatalln("fail to find creator for types:", database.Type)
 		return nil
 	}
 	db, err := creator.Create(database.IP, database.PORT, database.USER, database.PASSWORD, database.DATABASE)
 	if err != nil {
-		logx.NameSpace("DB").Fatalln(err)
+		log.Fatalln(err)
 		return nil
 	}
 

@@ -3,7 +3,7 @@ package cache
 import (
 	"github.com/yuuki798/TimerMe3/config"
 	"github.com/yuuki798/TimerMe3/core/cache/types"
-	"github.com/yuuki798/TimerMe3/core/logx"
+	"log"
 	"sync"
 )
 
@@ -19,7 +19,7 @@ func InitCache() {
 		if source.Key == "" {
 			source.Key = "*"
 		}
-		logx.NameSpace("cache").Infoln("create cache %s => %s:%s", source.Key, source.IP, source.PORT)
+		log.Println("create cache", source.Key, "=>", source.IP, ":", source.PORT)
 	}
 }
 
@@ -34,7 +34,7 @@ func setCacheByKey(key string, cache types.Cache) {
 		key = "*"
 	}
 	if GetCache(key) != nil {
-		logx.NameSpace("cache").Fatalln("duplicate db key: " + key)
+		log.Fatalln("duplicate db key: ", key)
 	}
 	mux.Lock()
 	defer mux.Unlock()
@@ -44,12 +44,12 @@ func setCacheByKey(key string, cache types.Cache) {
 func mustCreateCache(conf config.Cache) types.Cache {
 	var creator = getCreatorByType(conf.Type)
 	if creator == nil {
-		logx.NameSpace("cache").Fatalln("fail to find creator for cache types:%s", conf.Type)
+		log.Fatalln("fail to find creator for cache types:", conf.Type)
 		return nil
 	}
 	cache, err := creator.Create(conf)
 	if err != nil {
-		logx.NameSpace("cache").Fatalf("create err: %s", err)
+		log.Fatalln(err)
 		return nil
 	}
 	return cache

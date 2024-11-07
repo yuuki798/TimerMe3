@@ -1,13 +1,14 @@
 package user_entity
 
 import (
-	"gorm.io/gorm"
+	"github.com/yuuki798/TimerMe3/core/model"
 	"time"
 )
 
 // 定义用户的结构
 type User struct {
-	gorm.Model
+	//gorm.Model
+	model.BaseModel
 	Username     string `json:"username" gorm:"unique;not null"`
 	PasswordHash string `json:"-"` // 存储加密后的密码,不进行传输
 	Email        string `json:"email" gorm:"unique;not null"`

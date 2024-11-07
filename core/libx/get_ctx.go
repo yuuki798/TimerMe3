@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Uid(c *gin.Context) int {
+func Uid(c *gin.Context) uint {
 	uid := c.MustGet("uid").(uint)
-	uidInt := int(uid)
+	uidInt := uid
 	return uidInt
 }
 

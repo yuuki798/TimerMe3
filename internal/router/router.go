@@ -16,7 +16,6 @@ func (r Entity) Router(g *gin.RouterGroup) {
 	g.GET("/verify", user_handler.VerifyEmail)
 	// 登录接口
 	g.POST("/login", user_handler.Login)
-
 	//g.GET("/mysql", ping.TestMysql)
 	//g.GET("/redis", ping.TestRedis)
 }

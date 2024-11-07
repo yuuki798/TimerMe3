@@ -5,7 +5,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/yuuki798/TimerMe3/config"
 	"github.com/yuuki798/TimerMe3/core/cache/types"
-	"github.com/yuuki798/TimerMe3/core/logx"
+	"log"
 	"time"
 )
 
@@ -20,7 +20,7 @@ func (c RedisCreator) Create(conf config.Cache) (types.Cache, error) {
 	})
 	_, err := r.client.Ping().Result()
 	if err != nil {
-		logx.NameSpace("redis").Fatalln(err)
+		log.Fatalln(err)
 	}
 	return r, nil
 }
@@ -35,8 +35,9 @@ func (r RedisCache) GetInt(key string) (int, bool) {
 		return value, true
 	}
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
+
 	return 0, false
 }
 
@@ -46,7 +47,7 @@ func (r RedisCache) GetInt64(key string) (int64, bool) {
 		return value, true
 	}
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	return 0, false
 }
@@ -57,7 +58,7 @@ func (r RedisCache) GetFloat32(key string) (float32, bool) {
 		return value, true
 	}
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	return 0, false
 }
@@ -68,7 +69,7 @@ func (r RedisCache) GetFloat64(key string) (float64, bool) {
 		return value, true
 	}
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	return 0, false
 }
@@ -79,7 +80,7 @@ func (r RedisCache) GetString(key string) (string, bool) {
 		return value, true
 	}
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	return "", false
 }
@@ -87,7 +88,7 @@ func (r RedisCache) GetString(key string) (string, bool) {
 func (r RedisCache) GetBool(key string) (bool, bool) {
 	value, err := r.client.Get(key).Result()
 	if err != redis.Nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	if value == "1" {
 		return true, true
@@ -106,7 +107,7 @@ func (r RedisCache) Del(key string) bool {
 	if err == redis.Nil {
 		return false
 	} else if err != nil {
-		logx.NameSpace("redis").Errorln(err)
+		log.Fatalln(err)
 	}
 	return true
 }
